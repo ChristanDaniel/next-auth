@@ -1,6 +1,6 @@
 import Router from "next/dist/client/router";
 import { setCookie } from "nookies";
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useEffect, useState } from "react";
 import { api } from "../services/api";
 
 type User = {
@@ -29,6 +29,10 @@ export const AuthContext = createContext({} as AuthContextData);
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User>();
   const isAuthenticated = !!user;
+
+  useEffect(() => {
+    
+  },[])
 
   async function signIn({ email, password }: SignInCredentials) {
     try {
