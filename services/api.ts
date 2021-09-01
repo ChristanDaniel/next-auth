@@ -8,4 +8,4 @@ export const api = axios.create({
     headers: {
         Authorization: `Bearer ${cookies['nextauth.token']}`
     }
-})
+});
