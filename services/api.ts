@@ -1,6 +1,7 @@
 import axios, { AxiosError } from "axios";
 import router from "next/router";
 import { destroyCookie, parseCookies, setCookie } from "nookies";
+import { signOut } from "../context/AuthContext";
 
 let cookies = parseCookies();
 let isRefreshing = false;
@@ -76,11 +77,9 @@ api.interceptors.response.use(
           });
         });
       } else {
-        destroyCookie(undefined, 'nextauth.token')
-        destroyCookie(undefined, 'nextauth.refreshToken')
-
-        router.push('/')
+        signOut()
       }
     }
+    return Promise.reject(error)
   }
 );
