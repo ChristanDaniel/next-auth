@@ -2,6 +2,7 @@ import axios, { AxiosError } from "axios";
 import router from "next/router";
 import { destroyCookie, parseCookies, setCookie } from "nookies";
 import { signOut } from "../context/AuthContext";
+import { AuthTokenError } from "./AuthTokenError";
 
 let isRefreshing = false;
 let failedRequestsQueue = [];
@@ -86,7 +87,11 @@ export function setupAPIClient(ctx = undefined) {
             });
           });
         } else {
-          signOut();
+          if (process.browser) {
+            signOut();
+          } else {
+            return Promise.reject( new AuthTokenError())
+          }
         }
       }
       return Promise.reject(error);
