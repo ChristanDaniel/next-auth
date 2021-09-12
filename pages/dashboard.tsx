@@ -1,3 +1,4 @@
+import { destroyCookie } from "nookies";
 import React, { useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { setupAPIClient } from "../services/api";
@@ -24,10 +25,17 @@ export const getServerSideProps = withSSRAuth(async (ctx) => {
     try {
       const response = await apiClient.get('/me');
     } catch (err) {
-      console.log(err instanceof AuthTokenError)
+      destroyCookie(ctx, 'nextauth.token')
+      destroyCookie(ctx, 'nextauth.refreshToken')
+
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        }
+      }
     }
 
-    // console.log(response.data)
   return {
     props: {},
   };
